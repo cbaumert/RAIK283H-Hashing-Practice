@@ -32,7 +32,6 @@ let updateTable = (results) => {
 						<th>TOTAL SCORE</th>\
 					</tr>';
 	for(index in results){
-		console.log(results[index]);
 		result = results[index];
 		let row = "<tr>";
 		row +='<td class="desc">'+result['hashing_desc']+'</td>';

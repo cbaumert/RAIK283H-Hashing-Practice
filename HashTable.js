@@ -52,7 +52,6 @@ class SimpleHashTable {
 	*/
 	delete(key){
 		let delete_index = this._search(key);
-		console.log(delete_index);
 		if(delete_index >= 0){
 			let deleted_node = this.elements[delete_index];
 			this.elements[delete_index] = this.deleted_element;
@@ -85,7 +84,6 @@ class SimpleHashTable {
 	*/
 	_search(key){
 		let search_index = this.hash_f(key,this.elements.length);
-		console.log(search_index);
 		while(!this._isEmpty(search_index) 
 			&& this.elements[search_index].key!==key){
 			search_index = this.collision_f(key,search_index,this.elements.length);
