@@ -2,6 +2,36 @@ let hashSimpleModulus = (key, array_size) => {
 	return key % array_size;
 }
 
+let hashMultiplicativeMethod = (key, array_size) => {
+	return (41 * key) % array_size;
+}
+
+let hashAdditiveFoldingMethod = (key, array_size) => {
+	let foldsArr = getFolds(key, 2);
+
+	let sum = 0;
+	for (let i = 0; i < foldsArr.length; i++) {
+		sum += foldsArr[i];
+	}
+
+	return sum % array_size;
+}
+
+let additiveFoldingProbing = (key, prev_index, array_size) => {
+	let foldsArr = getFolds(key, 2);
+
+	let sum = 0;
+	for (let i = 0; i < foldsArr.length; i++) {
+		sum += foldsArr[i] + prev_index;
+	}
+
+	return sum % array_size;
+}
+
+let hashQuadraticFormula = (key, array_size) => {
+	return (-key + Math.floor(Math.sqrt(Math.pow(key, 2) - 4 * array_size * key))) % (2 * array_size);
+}
+
 let collisionLinearProbing = (key, prev_index, array_size) => {
 	return (prev_index + 1) % array_size;
 }
@@ -76,16 +106,14 @@ let runExperiment = (hashing_function, hashing_desc, collision_function, collisi
 
 	// insert some elements
 	for (index in data) {
-		if (index < 16) {
-			key = data[index]['id'];
-			value = data[index];
+		key = data[index]['id'];
+		value = data[index];
 
-			// store for logging purposes
-			last_collisions_count = 0;
+		// store for logging purposes
+		last_collisions_count = 0;
 
-			// perform the insert
-			hash_table.insert(key, value);
-		}
+		// perform the insert
+		hash_table.insert(key, value);
 	}
 
 	let results = {};
@@ -111,6 +139,15 @@ $(document).ready(function () {
 	results.push(runExperiment(hashSimpleModulus, "simple modulus", collisionLinearProbing, "linear probing", .5));
 	results.push(runExperiment(hashSimpleModulus, "simple modulus", collisionLinearProbing, "linear probing", .3));
 	results.push(runExperiment(hashSimpleModulus, "simple modulus", collisionLinearProbing, "linear probing", .1));
+
+	// perform the experiment using the multiplicative method
+	results.push(runExperiment(hashMultiplicativeMethod, "multiplicative method", collisionLinearProbing, "linear probing", .5));
+
+	// perform the experiment using the multiplicative method
+	results.push(runExperiment(hashAdditiveFoldingMethod, "additive folding", collisionLinearProbing, "linear probing", .5));
+
+	// perform the experiment using my own method (quadratic formula??)
+	results.push(runExperiment(hashQuadraticFormula, "quadratic formula", collisionLinearProbing, "linear probing", .5));
 
 	updateTable(results);
 });

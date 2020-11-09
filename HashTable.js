@@ -102,7 +102,19 @@ class SimpleHashTable {
 		logarithmic (it increases by a factor of  2 each time it grows).
 	*/
 	_grow() {
-		// TODO: implementation left as an exercise
+		// store this.elements in a new variable
+		let old_elements = this.elements;
+		// replace this.elements with a new empty array of twice the length
+		this.elements = new Array(this.elements.length * 2).fill(undefined);
+
+		// iterate through the values in old elements
+		old_elements.forEach(node => {
+			// make sure the element isn't undefined
+			if (node) {
+				// insert the current value into this.elements
+				this.insert(node.key, node.value);
+			}
+		});
 	}
 
 	/*
